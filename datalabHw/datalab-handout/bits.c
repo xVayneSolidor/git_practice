@@ -170,7 +170,7 @@ NOTES:
  *   Rating: 1
  */
 int bitXor(int x, int y) {
-  return (x & ~(x & y)) & ~(y & ~(x & y));
+  return (~(x & y)) & (~((~x) & (~y)));
 }
 /* 
  * tmin - return minimum two's complement integer 
@@ -288,7 +288,30 @@ int isLessOrEqual(int x, int y) {
  *  Rating: 4
  */
 int howManyBits(int x) {
-  return 0;
+	int signo, bit16, bit8, bit4, bit2, bit1, bit0;
+
+	signo = x >> 31;
+
+	x = (signo & ~x) | (~signo & x);
+
+	bit16 = !!(x >> 16) << 4;
+	x = x >> bit16;
+
+	bit8 = !!(x >> 8) << 3;
+	x = x >> bit8;
+
+	bit4 = !!(x >> 4) << 2;
+	x = x >> bit4;
+
+	bit2 = !!(x >> 2) << 1;
+	x = x >> bit2;
+
+	bit1 = !!(x >> 1);
+	x = !!x;
+
+	bit0 = x;
+
+  return bit16 + bit8 + bit4 + bit2 + bit1 + bit0 + 1;
 }
 //float
 //#include "floatScale2.c"
